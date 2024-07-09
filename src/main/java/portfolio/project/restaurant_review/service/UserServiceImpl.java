@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> findAllUser() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
@@ -27,5 +27,26 @@ public class UserServiceImpl implements UserService{
     @Override
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        Optional<User> oldUserOptional = userRepository.findById(user.getId());
+        if (!oldUserOptional.isPresent()) {
+            throw new RuntimeException("No User was found");
+        }
+        User oldUser = oldUserOptional.get();
+        if (user.getDisplayName() != null) {
+            oldUser.setDisplayName(user.getDisplayName());
+        }
+        oldUser.setInterestedInPeanutAllergy(user.isInterestedInPeanutAllergy());
+        oldUser.setInterestedInEggAllergy(user.isInterestedInEggAllergy());
+        oldUser.setInterestedInDairyAllergy(user.isInterestedInDairyAllergy());
+
+        return userRepository.save(oldUser);
+    }
+    @Override
+    public void deleteUser(Long Id) {
+        userRepository.deleteById(Id);
     }
 }

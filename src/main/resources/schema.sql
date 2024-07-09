@@ -1,13 +1,19 @@
-create table test(
-    id int auto_increment,
-    title varchar(55) NOT NULL,
-    pages int NOT NULL
+CREATE TABLE USERS
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    DISPLAYNAME VARCHAR(255),
+    INTEREST_PEANUT BOOLEAN,
+    INTEREST_EGG BOOLEAN,
+    INTEREST_DAIRY BOOLEAN
 );
 
-CREATE TABLE USERS (
-                       id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                       DISPLAYNAME VARCHAR(255),
-                       INTEREST_PEANUT BOOLEAN,
-                       INTEREST_EGG BOOLEAN,
-                       INTEREST_DAIRY BOOLEAN
+-- Create RESTAURANT table
+CREATE TABLE RESTAURANT
+(
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    NAME    VARCHAR(255),
+    ADDRESS VARCHAR(255),
+    CITY    VARCHAR(255),
+    STATE   VARCHAR(255),
+    ZIPCODE VARCHAR(255)
 );

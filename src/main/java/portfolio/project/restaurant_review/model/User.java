@@ -1,6 +1,6 @@
 package portfolio.project.restaurant_review.model;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 @Entity
 @Data
 @Table(name="USERS")
