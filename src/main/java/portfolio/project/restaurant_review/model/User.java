@@ -1,6 +1,9 @@
 package portfolio.project.restaurant_review.model;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+
 @Entity
 @Data
 @Table(name="USERS")
@@ -17,4 +20,7 @@ public class User {
     private boolean interestedInEggAllergy;
     @Column(name="INTEREST_DAIRY")
     private boolean interestedInDairyAllergy;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<DiningReview> reviews;
 }

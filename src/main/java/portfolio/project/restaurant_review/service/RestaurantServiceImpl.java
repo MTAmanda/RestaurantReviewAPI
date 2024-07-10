@@ -1,11 +1,14 @@
 package portfolio.project.restaurant_review.service;
 
 import org.springframework.stereotype.Service;
+import portfolio.project.restaurant_review.model.Allergies;
 import portfolio.project.restaurant_review.model.Restaurant;
+import portfolio.project.restaurant_review.model.RestaurantDTO;
 import portfolio.project.restaurant_review.repository.RestaurantRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -16,47 +19,71 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> findAllRestaurants() {
-        return restaurantRepository.findAll();
+    public List<RestaurantDTO> findAllRestaurants() {
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        return restaurants.stream()
+                .map(RestaurantDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Restaurant> findById(Long id) {
-        return restaurantRepository.findById(id);
+    public Optional<RestaurantDTO> findById(Long id) {
+        return restaurantRepository.findById(id).map(RestaurantDTO::new);
     }
 
     @Override
-    public Restaurant saveRestaurant(Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
+    public RestaurantDTO saveRestaurant(RestaurantDTO restaurantDTO) {
+        Restaurant restaurant = new Restaurant(restaurantDTO); // Create Restaurant entity from DTO
+        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+        return new RestaurantDTO(savedRestaurant);
     }
 
     @Override
-    public Restaurant updateRestaurant(Restaurant restaurant) {
-        Optional<Restaurant> oldRestaurantOptional = restaurantRepository.findById(restaurant.getId());
+    public RestaurantDTO updateRestaurant(RestaurantDTO restaurantDTO) {
+        Optional<Restaurant> oldRestaurantOptional = restaurantRepository.findById(restaurantDTO.getId());
         if (!oldRestaurantOptional.isPresent()) {
             throw new RuntimeException("No Restaurant was found");
         }
         Restaurant oldRestaurant = oldRestaurantOptional.get();
 
-        if (restaurant.getName() != null) {
-            oldRestaurant.setName(restaurant.getName());
+        if (restaurantDTO.getName() != null) {
+            oldRestaurant.setName(restaurantDTO.getName());
         }
-        if (restaurant.getAddress() != null) {
-            oldRestaurant.setAddress(restaurant.getAddress());
+        if (restaurantDTO.getAddress() != null) {
+            oldRestaurant.setAddress(restaurantDTO.getAddress());
         }
-        if (restaurant.getCity() != null) {
-            oldRestaurant.setCity(restaurant.getCity());
+        if (restaurantDTO.getCity() != null) {
+            oldRestaurant.setCity(restaurantDTO.getCity());
         }
-        if (restaurant.getState() != null) {
-            oldRestaurant.setState(restaurant.getState());
+        if (restaurantDTO.getState() != null) {
+            oldRestaurant.setState(restaurantDTO.getState());
         }
-        if (restaurant.getZipcode() != null) {
-            oldRestaurant.setZipcode(restaurant.getZipcode());
+        if (restaurantDTO.getZipcode() != null) {
+            oldRestaurant.setZipcode(restaurantDTO.getZipcode());
         }
-        return restaurantRepository.save(oldRestaurant);
+
+        Restaurant updatedRestaurant = restaurantRepository.save(oldRestaurant);
+        return new RestaurantDTO(updatedRestaurant);
     }
+
     @Override
-    public void deleteRestaurant(Long Id) {
-        restaurantRepository.deleteById(Id);
+    public void deleteRestaurant(Long id) {
+        restaurantRepository.deleteById(id);
+    }
+
+    @Override
+    public List<RestaurantDTO> findRestaurantsByAllergy(Allergies allergy) {
+        List<Restaurant> restaurants = restaurantRepository.findBySupportedAllergiesContaining(allergy);
+        return restaurants.stream()
+                .map(RestaurantDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RestaurantDTO> findRestaurantsByZipcode(String zipcode) {
+        List<Restaurant> restaurants = restaurantRepository.findByZipcode(zipcode);
+        return restaurants.stream()
+                .map(RestaurantDTO::new)
+                .collect(Collectors.toList());
     }
 }

@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> findByDisplayName(String displayName) {
+        return userRepository.findByDisplayName(displayName);
     }
 
     @Override
@@ -31,14 +31,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User updateUser(User user) {
-        Optional<User> oldUserOptional = userRepository.findById(user.getId());
+        Optional<User> oldUserOptional = userRepository.findByDisplayName(user.getDisplayName());
         if (!oldUserOptional.isPresent()) {
-            throw new RuntimeException("No User was found");
+            throw new RuntimeException("No User was found by the provided Username");
         }
         User oldUser = oldUserOptional.get();
-        if (user.getDisplayName() != null) {
-            oldUser.setDisplayName(user.getDisplayName());
-        }
+
         oldUser.setInterestedInPeanutAllergy(user.isInterestedInPeanutAllergy());
         oldUser.setInterestedInEggAllergy(user.isInterestedInEggAllergy());
         oldUser.setInterestedInDairyAllergy(user.isInterestedInDairyAllergy());
@@ -46,7 +44,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.save(oldUser);
     }
     @Override
-    public void deleteUser(Long Id) {
-        userRepository.deleteById(Id);
+    public void deleteUser(String displayName) {
+        userRepository.deleteUserByDisplayName(displayName);
     }
 }

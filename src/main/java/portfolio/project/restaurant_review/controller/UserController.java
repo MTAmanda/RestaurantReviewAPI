@@ -20,9 +20,9 @@ public class UserController {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/{Id}")
-    public Optional<User> findUserById(@PathVariable("Id") Long Id){
-        return userService.findById(Id);
+    @GetMapping("/{displayName}")
+    public Optional<User> findUserById(@PathVariable("displayName") String displayName){
+        return userService.findByDisplayName(displayName);
     }
 
     @PostMapping
@@ -30,13 +30,13 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @PutMapping("/{Id}")
-    public User user(@PathVariable("Id") Long Id, @RequestBody User user){
+    @PutMapping("/{displayName}")
+    public User user(@PathVariable("displayname") String displayName, @RequestBody User user){
         return userService.updateUser(user);
     }
 
-    @DeleteMapping("/{Id}")
-    public void deleteUser(@PathVariable("Id") Long Id){
-        userService.deleteUser(Id);
+    @DeleteMapping("/{displayName}")
+    public void deleteUser(@PathVariable("displayName") String displayName){
+        userService.deleteUser(displayName);
     }
 }

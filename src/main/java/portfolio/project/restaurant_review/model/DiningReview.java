@@ -10,7 +10,8 @@ public class DiningReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name="REVIEW_TITLE")
+    private String reviewTitle;
     @Column(name="USER_NAME")
     private String userDisplayName;
     @Column(name="PEANUT_SCORE")
@@ -24,4 +25,8 @@ public class DiningReview {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
