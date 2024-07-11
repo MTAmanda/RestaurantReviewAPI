@@ -1,8 +1,9 @@
-package portfolio.project.restaurant_review.model;
+package portfolio.project.restaurant_review.dto;
 import lombok.Data;
+import portfolio.project.restaurant_review.model.User;
 
 @Data
-public class UserDTO {
+public class UserDto {
 
     private String displayName;
     private boolean interestedInPeanutAllergy;
@@ -10,11 +11,11 @@ public class UserDTO {
     private boolean interestedInDairyAllergy;
     private int reviewCount;
 
-    public UserDTO() {
+    public UserDto() {
     }
 
     // Constructor to map from User entity
-    public UserDTO(User user) {
+    public UserDto(User user) {
         this.displayName = user.getDisplayName();
         this.interestedInPeanutAllergy = user.isInterestedInPeanutAllergy();
         this.interestedInEggAllergy = user.isInterestedInEggAllergy();

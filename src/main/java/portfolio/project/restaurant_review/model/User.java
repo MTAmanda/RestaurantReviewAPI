@@ -1,6 +1,7 @@
 package portfolio.project.restaurant_review.model;
 import jakarta.persistence.*;
 import lombok.*;
+import portfolio.project.restaurant_review.dto.UserDto;
 
 import java.util.List;
 
@@ -24,12 +25,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<DiningReview> reviews;
 
-    // Constructor to map from UserDTO
-    public User(UserDTO userDTO) {
-        this.displayName = userDTO.getDisplayName();
-        this.interestedInPeanutAllergy = userDTO.isInterestedInPeanutAllergy();
-        this.interestedInEggAllergy = userDTO.isInterestedInEggAllergy();
-        this.interestedInDairyAllergy = userDTO.isInterestedInDairyAllergy();
+    // Constructor to map from UserDto
+    public User(UserDto userDto) {
+        this.displayName = userDto.getDisplayName();
+        this.interestedInPeanutAllergy = userDto.isInterestedInPeanutAllergy();
+        this.interestedInEggAllergy = userDto.isInterestedInEggAllergy();
+        this.interestedInDairyAllergy = userDto.isInterestedInDairyAllergy();
     }
     public User() {
     }

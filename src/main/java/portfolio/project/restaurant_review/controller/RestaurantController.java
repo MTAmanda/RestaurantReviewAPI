@@ -3,8 +3,7 @@ package portfolio.project.restaurant_review.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import portfolio.project.restaurant_review.model.Allergies;
-import portfolio.project.restaurant_review.model.Restaurant;
-import portfolio.project.restaurant_review.model.RestaurantDTO;
+import portfolio.project.restaurant_review.dto.RestaurantDto;
 import portfolio.project.restaurant_review.service.RestaurantService;
 
 import java.util.List;
@@ -21,27 +20,26 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public List<RestaurantDTO> findAllRestaurants() {
+    public List<RestaurantDto> findAllRestaurants() {
         return restaurantService.findAllRestaurants();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestaurantDTO> findRestaurantById(@PathVariable("id") Long id) {
-        Optional<RestaurantDTO> restaurantOptional = restaurantService.findById(id);
-        return restaurantOptional.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<RestaurantDto> findRestaurantById(@PathVariable("id") Long id) {
+        RestaurantDto restaurantDto = restaurantService.findById(id);
+        return ResponseEntity.ok(restaurantDto);
     }
 
     @PostMapping
-    public ResponseEntity<RestaurantDTO> saveRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
-        RestaurantDTO savedRestaurant = restaurantService.saveRestaurant(restaurantDTO);
+    public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody RestaurantDto restaurantDto) {
+        RestaurantDto savedRestaurant = restaurantService.saveRestaurant(restaurantDto);
         return ResponseEntity.ok(savedRestaurant);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RestaurantDTO> updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDTO restaurantDTO) {
-        restaurantDTO.setId(id);
-        RestaurantDTO updatedRestaurant = restaurantService.updateRestaurant(restaurantDTO);
+    public ResponseEntity<RestaurantDto> updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDto restaurantDto) {
+        restaurantDto.setId(id);
+        RestaurantDto updatedRestaurant = restaurantService.updateRestaurant(restaurantDto);
         return ResponseEntity.ok(updatedRestaurant);
     }
 
@@ -52,12 +50,12 @@ public class RestaurantController {
     }
 
     @GetMapping("/by-allergy")
-    public List<RestaurantDTO> getRestaurantsByAllergy(@RequestParam Allergies allergy) {
+    public List<RestaurantDto> getRestaurantsByAllergy(@RequestParam Allergies allergy) {
         return restaurantService.findRestaurantsByAllergy(allergy);
     }
 
     @GetMapping("/by-zipcode")
-    public List<RestaurantDTO> getRestaurantsByZipcode(@RequestParam String zipcode) {
+    public List<RestaurantDto> getRestaurantsByZipcode(@RequestParam String zipcode) {
         return restaurantService.findRestaurantsByZipcode(zipcode);
     }
 }

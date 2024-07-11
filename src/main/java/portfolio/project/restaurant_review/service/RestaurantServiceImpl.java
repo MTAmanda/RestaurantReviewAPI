@@ -1,9 +1,10 @@
 package portfolio.project.restaurant_review.service;
 
 import org.springframework.stereotype.Service;
+import portfolio.project.restaurant_review.dto.mapper.RestaurantMapper;
 import portfolio.project.restaurant_review.model.Allergies;
 import portfolio.project.restaurant_review.model.Restaurant;
-import portfolio.project.restaurant_review.model.RestaurantDTO;
+import portfolio.project.restaurant_review.dto.RestaurantDto;
 import portfolio.project.restaurant_review.repository.RestaurantRepository;
 
 import java.util.List;
@@ -13,57 +14,60 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantMapper restaurantMapper;
 
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, RestaurantMapper restaurantMapper) {
         this.restaurantRepository = restaurantRepository;
+        this.restaurantMapper = restaurantMapper;
     }
 
     @Override
-    public List<RestaurantDTO> findAllRestaurants() {
+    public List<RestaurantDto> findAllRestaurants() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         return restaurants.stream()
-                .map(RestaurantDTO::new)
+                .map(RestaurantDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<RestaurantDTO> findById(Long id) {
-        return restaurantRepository.findById(id).map(RestaurantDTO::new);
+    public RestaurantDto findById(Long id) {
+        Restaurant restaurant = restaurantRepository.getReferenceById(id);
+        return restaurantMapper.map(restaurant);
     }
 
     @Override
-    public RestaurantDTO saveRestaurant(RestaurantDTO restaurantDTO) {
-        Restaurant restaurant = new Restaurant(restaurantDTO); // Create Restaurant entity from DTO
+    public RestaurantDto saveRestaurant(RestaurantDto restaurantDto) {
+        Restaurant restaurant = restaurantMapper.map(restaurantDto); // Create Restaurant entity from Dto
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
-        return new RestaurantDTO(savedRestaurant);
+        return restaurantMapper.map(savedRestaurant);
     }
 
     @Override
-    public RestaurantDTO updateRestaurant(RestaurantDTO restaurantDTO) {
-        Optional<Restaurant> oldRestaurantOptional = restaurantRepository.findById(restaurantDTO.getId());
+    public RestaurantDto updateRestaurant(RestaurantDto restaurantDto) {
+        Optional<Restaurant> oldRestaurantOptional = restaurantRepository.findById(restaurantDto.getId());
         if (!oldRestaurantOptional.isPresent()) {
             throw new RuntimeException("No Restaurant was found");
         }
         Restaurant oldRestaurant = oldRestaurantOptional.get();
 
-        if (restaurantDTO.getName() != null) {
-            oldRestaurant.setName(restaurantDTO.getName());
+        if (restaurantDto.getName() != null) {
+            oldRestaurant.setName(restaurantDto.getName());
         }
-        if (restaurantDTO.getAddress() != null) {
-            oldRestaurant.setAddress(restaurantDTO.getAddress());
+        if (restaurantDto.getAddress() != null) {
+            oldRestaurant.setAddress(restaurantDto.getAddress());
         }
-        if (restaurantDTO.getCity() != null) {
-            oldRestaurant.setCity(restaurantDTO.getCity());
+        if (restaurantDto.getCity() != null) {
+            oldRestaurant.setCity(restaurantDto.getCity());
         }
-        if (restaurantDTO.getState() != null) {
-            oldRestaurant.setState(restaurantDTO.getState());
+        if (restaurantDto.getState() != null) {
+            oldRestaurant.setState(restaurantDto.getState());
         }
-        if (restaurantDTO.getZipcode() != null) {
-            oldRestaurant.setZipcode(restaurantDTO.getZipcode());
+        if (restaurantDto.getZipcode() != null) {
+            oldRestaurant.setZipcode(restaurantDto.getZipcode());
         }
 
         Restaurant updatedRestaurant = restaurantRepository.save(oldRestaurant);
-        return new RestaurantDTO(updatedRestaurant);
+        return new RestaurantDto(updatedRestaurant);
     }
 
     @Override
@@ -72,18 +76,18 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<RestaurantDTO> findRestaurantsByAllergy(Allergies allergy) {
+    public List<RestaurantDto> findRestaurantsByAllergy(Allergies allergy) {
         List<Restaurant> restaurants = restaurantRepository.findBySupportedAllergiesContaining(allergy);
         return restaurants.stream()
-                .map(RestaurantDTO::new)
+                .map(RestaurantDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<RestaurantDTO> findRestaurantsByZipcode(String zipcode) {
+    public List<RestaurantDto> findRestaurantsByZipcode(String zipcode) {
         List<Restaurant> restaurants = restaurantRepository.findByZipcode(zipcode);
         return restaurants.stream()
-                .map(RestaurantDTO::new)
+                .map(RestaurantDto::new)
                 .collect(Collectors.toList());
     }
 }

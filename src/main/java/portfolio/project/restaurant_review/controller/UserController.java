@@ -1,6 +1,6 @@
 package portfolio.project.restaurant_review.controller;
 import org.springframework.web.bind.annotation.*;
-import portfolio.project.restaurant_review.model.UserDTO;
+import portfolio.project.restaurant_review.dto.UserDto;
 import portfolio.project.restaurant_review.service.UserService;
 
 import java.util.List;
@@ -16,23 +16,23 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDTO> findAllUsers() {
+    public List<UserDto> findAllUsers() {
         return userService.findAllUsers();
     }
 
     @GetMapping("/{displayName}")
-    public Optional<UserDTO> findUserById(@PathVariable("displayName") String displayName) {
+    public Optional<UserDto> findUserById(@PathVariable("displayName") String displayName) {
         return userService.findByDisplayName(displayName);
     }
 
     @PostMapping
-    public UserDTO registerUser(@RequestBody UserDTO userDTO) {
-        return userService.registerUser(userDTO);
+    public UserDto registerUser(@RequestBody UserDto userDto) {
+        return userService.registerUser(userDto);
     }
 
     @PutMapping("/{displayName}")
-    public UserDTO updateUser(@PathVariable("displayName") String displayName, @RequestBody UserDTO userDTO) {
-        return userService.updateUser(displayName, userDTO);
+    public UserDto updateUser(@PathVariable("displayName") String displayName, @RequestBody UserDto userDto) {
+        return userService.updateUser(displayName, userDto);
     }
 
     @DeleteMapping("/{displayName}")

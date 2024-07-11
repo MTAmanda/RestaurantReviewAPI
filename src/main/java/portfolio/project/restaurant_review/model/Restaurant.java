@@ -1,10 +1,16 @@
 package portfolio.project.restaurant_review.model;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import portfolio.project.restaurant_review.dto.RestaurantDto;
+
 import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
+@SuperBuilder
 @Table(name="RESTAURANT")
 public class Restaurant {
     @Id
@@ -26,21 +32,8 @@ public class Restaurant {
     @Column(name = "allergy")
     @Enumerated(EnumType.STRING)
     private List<Allergies> supportedAllergies;
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<DiningReview> reviews;
 
-    public Restaurant(RestaurantDTO restaurantDTO) {
-        this.id = restaurantDTO.getId();
-        this.name = restaurantDTO.getName();
-        this.address = restaurantDTO.getAddress();
-        this.city = restaurantDTO.getCity();
-        this.state = restaurantDTO.getState();
-        this.zipcode = restaurantDTO.getZipcode();
-
-    }
-
-    public Restaurant() {
-
-    }
 }
 

@@ -3,7 +3,7 @@ package portfolio.project.restaurant_review.service;
 import org.springframework.dao.DataIntegrityViolationException;
 import portfolio.project.restaurant_review.model.User;
 import org.springframework.stereotype.Service;
-import portfolio.project.restaurant_review.model.UserDTO;
+import portfolio.project.restaurant_review.dto.UserDto;
 import portfolio.project.restaurant_review.repository.UserRepository;
 
 import java.util.List;
@@ -19,25 +19,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAllUsers() {
+    public List<UserDto> findAllUsers() {
         return userRepository.findAll().stream()
-                .map(UserDTO::new)
+                .map(UserDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<UserDTO> findByDisplayName(String displayName) {
+    public Optional<UserDto> findByDisplayName(String displayName) {
         return userRepository.findByDisplayName(displayName)
-                .map(UserDTO::new);
+                .map(UserDto::new);
     }
 
     @Override
-    public UserDTO registerUser(UserDTO userDTO) {
-        Optional<User> existingUser = userRepository.findByDisplayName(userDTO.getDisplayName());
+    public UserDto registerUser(UserDto userDto) {
+        Optional<User> existingUser = userRepository.findByDisplayName(userDto.getDisplayName());
         if (existingUser.isPresent()) {
             throw new RuntimeException("Username already exists, please choose a different username");
         }
-        User user = convertToEntity(userDTO);
+        User user = convertToEntity(userDto);
 
         try {
             user = userRepository.save(user);
@@ -45,22 +45,22 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Error saving user: " + e.getMessage(), e);
         }
 
-        return convertToDTO(user);
+        return convertToDto(user);
     }
 
     @Override
-    public UserDTO updateUser(String displayName, UserDTO userDTO) {
+    public UserDto updateUser(String displayName, UserDto userDto) {
         Optional<User> oldUserOptional = userRepository.findByDisplayName(displayName);
         if (!oldUserOptional.isPresent()) {
             throw new RuntimeException("No User was found by the provided Username");
         }
         User oldUser = oldUserOptional.get();
 
-        oldUser.setInterestedInPeanutAllergy(userDTO.isInterestedInPeanutAllergy());
-        oldUser.setInterestedInEggAllergy(userDTO.isInterestedInEggAllergy());
-        oldUser.setInterestedInDairyAllergy(userDTO.isInterestedInDairyAllergy());
+        oldUser.setInterestedInPeanutAllergy(userDto.isInterestedInPeanutAllergy());
+        oldUser.setInterestedInEggAllergy(userDto.isInterestedInEggAllergy());
+        oldUser.setInterestedInDairyAllergy(userDto.isInterestedInDairyAllergy());
 
-        return convertToDTO(userRepository.save(oldUser));
+        return convertToDto(userRepository.save(oldUser));
     }
 
     @Override
@@ -68,21 +68,21 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteUserByDisplayName(displayName);
     }
 
-    private UserDTO convertToDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setDisplayName(user.getDisplayName());
-        userDTO.setInterestedInPeanutAllergy(user.isInterestedInPeanutAllergy());
-        userDTO.setInterestedInEggAllergy(user.isInterestedInEggAllergy());
-        userDTO.setInterestedInDairyAllergy(user.isInterestedInDairyAllergy());
-        return userDTO;
+    private UserDto convertToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setDisplayName(user.getDisplayName());
+        userDto.setInterestedInPeanutAllergy(user.isInterestedInPeanutAllergy());
+        userDto.setInterestedInEggAllergy(user.isInterestedInEggAllergy());
+        userDto.setInterestedInDairyAllergy(user.isInterestedInDairyAllergy());
+        return userDto;
     }
 
-    private User convertToEntity(UserDTO userDTO) {
+    private User convertToEntity(UserDto userDto) {
         User user = new User();
-        user.setDisplayName(userDTO.getDisplayName());
-        user.setInterestedInPeanutAllergy(userDTO.isInterestedInPeanutAllergy());
-        user.setInterestedInEggAllergy(userDTO.isInterestedInEggAllergy());
-        user.setInterestedInDairyAllergy(userDTO.isInterestedInDairyAllergy());
+        user.setDisplayName(userDto.getDisplayName());
+        user.setInterestedInPeanutAllergy(userDto.isInterestedInPeanutAllergy());
+        user.setInterestedInEggAllergy(userDto.isInterestedInEggAllergy());
+        user.setInterestedInDairyAllergy(userDto.isInterestedInDairyAllergy());
         return user;
     }
 }
