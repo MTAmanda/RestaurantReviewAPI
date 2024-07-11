@@ -36,14 +36,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantMapper.toDto(restaurant);
     }
 
-    @Transactional
+   @Transactional
     @Override
     public RestaurantDto createRestaurant(RestaurantDto restaurantDto) {
-        Restaurant restaurant = restaurantMapper.toEntity(restaurantDto); // Create Restaurant entity from Dto
-        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
-        return restaurantMapper.toDto(savedRestaurant);
-    }
+       Restaurant restaurant = restaurantMapper.toEntity(restaurantDto);
+       restaurant.setId(null);
+       Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+       return restaurantMapper.toDto(savedRestaurant);
 
+   }
     @Transactional
     @Override
     public RestaurantDto updateRestaurant(RestaurantDto restaurantDto) {

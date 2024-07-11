@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import portfolio.project.restaurant_review.dto.RestaurantDto;
 import portfolio.project.restaurant_review.model.Allergies;
+import portfolio.project.restaurant_review.model.Restaurant;
 import portfolio.project.restaurant_review.service.RestaurantService;
 
 import java.util.List;

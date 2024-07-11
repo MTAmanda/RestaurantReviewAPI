@@ -2,6 +2,7 @@ package portfolio.project.restaurant_review.service;
 
 import portfolio.project.restaurant_review.dto.RestaurantDto;
 import portfolio.project.restaurant_review.model.Allergies;
+import portfolio.project.restaurant_review.model.Restaurant;
 
 import java.util.List;
 

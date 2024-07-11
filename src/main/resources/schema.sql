@@ -16,7 +16,7 @@ CREATE TABLE RESTAURANT (
                             ADDRESS VARCHAR(255),
                             CITY VARCHAR(255),
                             STATE VARCHAR(255),
-                            ZIPCODE VARCHAR(10)
+                            ZIPCODE VARCHAR(255) -- Adjusted to VARCHAR(255) to match entity definition
 );
 
 -- Create RESTAURANT_ALLERGIES table
@@ -35,7 +35,7 @@ CREATE TABLE DINING_REVIEWS (
                                 PEANUT_SCORE INT,
                                 EGG_SCORE INT,
                                 DAIRY_SCORE INT,
-                                COMMENTARY TEXT,
+                                COMMENTARY VARCHAR(255), -- Adjusted to VARCHAR(255) to match entity definition
                                 restaurant_id BIGINT,
                                 user_id BIGINT,
                                 CONSTRAINT FK_RESTAURANT FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT(id),

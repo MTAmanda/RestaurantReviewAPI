@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface RestaurantMapper {
     RestaurantDto toDto(Restaurant restaurant);
-   // @Mapping(target = "id", ignore = true)
+   @Mapping(target = "id", ignore = true)
     Restaurant toEntity(RestaurantDto restaurantDto);
 
     List<RestaurantDto> toDtoList(List<Restaurant> restaurantList);
