@@ -3,7 +3,7 @@
 -- Create USERS table
 CREATE TABLE USERS (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                       DISPLAYNAME VARCHAR(255),
+                       DISPLAYNAME VARCHAR(255) NOT NULL UNIQUE,
                        INTEREST_PEANUT BOOLEAN,
                        INTEREST_EGG BOOLEAN,
                        INTEREST_DAIRY BOOLEAN

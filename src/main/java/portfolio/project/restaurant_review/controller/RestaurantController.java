@@ -13,6 +13,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/restaurants")
 public class RestaurantController {
+
     private final RestaurantService restaurantService;
 
     public RestaurantController(RestaurantService restaurantService) {
@@ -32,19 +33,22 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public RestaurantDTO saveRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
-        return restaurantService.saveRestaurant(restaurantDTO);
+    public ResponseEntity<RestaurantDTO> saveRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
+        RestaurantDTO savedRestaurant = restaurantService.saveRestaurant(restaurantDTO);
+        return ResponseEntity.ok(savedRestaurant);
     }
 
     @PutMapping("/{id}")
-    public RestaurantDTO updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDTO restaurantDTO) {
+    public ResponseEntity<RestaurantDTO> updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDTO restaurantDTO) {
         restaurantDTO.setId(id);
-        return restaurantService.updateRestaurant(restaurantDTO);
+        RestaurantDTO updatedRestaurant = restaurantService.updateRestaurant(restaurantDTO);
+        return ResponseEntity.ok(updatedRestaurant);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRestaurant(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable("id") Long id) {
         restaurantService.deleteRestaurant(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/by-allergy")
