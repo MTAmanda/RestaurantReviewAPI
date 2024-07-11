@@ -2,7 +2,6 @@ package portfolio.project.restaurant_review.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import portfolio.project.restaurant_review.model.Restaurant;
 
 @Data
 @NoArgsConstructor

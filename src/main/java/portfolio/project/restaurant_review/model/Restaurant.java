@@ -1,14 +1,14 @@
 package portfolio.project.restaurant_review.model;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import portfolio.project.restaurant_review.dto.RestaurantDto;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
 @Table(name="RESTAURANT")
@@ -34,6 +34,5 @@ public class Restaurant {
     private List<Allergies> supportedAllergies;
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<DiningReview> reviews;
-
 }
 

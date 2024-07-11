@@ -2,12 +2,11 @@ package portfolio.project.restaurant_review.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import portfolio.project.restaurant_review.model.Allergies;
 import portfolio.project.restaurant_review.dto.RestaurantDto;
+import portfolio.project.restaurant_review.model.Allergies;
 import portfolio.project.restaurant_review.service.RestaurantService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -32,13 +31,12 @@ public class RestaurantController {
 
     @PostMapping
     public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody RestaurantDto restaurantDto) {
-        RestaurantDto savedRestaurant = restaurantService.saveRestaurant(restaurantDto);
+        RestaurantDto savedRestaurant = restaurantService.createRestaurant(restaurantDto);
         return ResponseEntity.ok(savedRestaurant);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RestaurantDto> updateRestaurant(@PathVariable("id") Long id, @RequestBody RestaurantDto restaurantDto) {
-        restaurantDto.setId(id);
         RestaurantDto updatedRestaurant = restaurantService.updateRestaurant(restaurantDto);
         return ResponseEntity.ok(updatedRestaurant);
     }
