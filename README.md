@@ -1,4 +1,18 @@
 
+***PROJECT DESCRIPTION***
+
+Build an application by applying all the concepts from the Java course. Start from scratch and finish with a working API.
+
+**Project Objectives:**
+- Construct a RESTful web API with data persistence using Spring and Spring Data JPA
+- Use Spring Initializr to generate the initial Java project
+- Configure application properties for certain dependencies, including the H2 embedded database
+- Define the entities that comprise this application scenario
+- Define the repositories that enable creating, updating, and querying these different entities
+- Define the API contracts that will enable this application scenario
+  
+***SCENARIOS***
+  
   **User entity-related scenarios:** 
 - [x] As an unregistered user, I want to create my user profile using a display name that’s unique only to me.
 - [x] As a registered user, I want to update my user profile. I cannot modify my unique display name.
@@ -17,7 +31,7 @@
 - [x] As an application experience, I want to fetch the details of a restaurant, given its unique Id.
 - [x] As an application experience, I want to fetch restaurants that match a given zip code and that also have at least one user-submitted score for a given allergy. I want to see them sorted in descending order.
 
-API contract requirements:
+***API CONTRACT REQUIREMENTS***
 
 **Requests:**
 - [x] A user will always be referenced by their unique display name, not by a database Id.
