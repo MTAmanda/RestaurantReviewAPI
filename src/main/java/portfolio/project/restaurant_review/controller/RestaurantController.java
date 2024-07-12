@@ -60,6 +60,6 @@ public class RestaurantController {
 
     @GetMapping("/by-zipcodesorted")
     public List<RestaurantDto> getRestaurantsByZipcodeSorted(@RequestParam String zipcode) {
-        return restaurantService.getRestaurantsByZipcodeWithScoresOrderedByScoreCount(zipcode);
+        return restaurantService.getRestaurantsByZipcodeWithAllergyCount(zipcode);
     }
 }

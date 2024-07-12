@@ -94,13 +94,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Transactional(readOnly = true)
-    public List<RestaurantDto> getRestaurantsByZipcodeWithScoresOrderedByScoreCount(String zipcode) {
-        List<Object[]> restaurantObjects = restaurantRepository.findRestaurantsByZipcodeWithScoresOrderedByScoreCount(zipcode);
+    public List<RestaurantDto> getRestaurantsByZipcodeWithAllergyCount(String zipcode) {
+        List<Object[]> restaurantObjects = restaurantRepository.findRestaurantsByZipcodeWithAllergyCount(zipcode);
 
         return restaurantObjects.stream()
                 .map(object -> {
                     Restaurant restaurant = (Restaurant) object[0];
-                    // You can access scoreCount as object[1] if needed
+                    // allergyCount can be accessed as object[1] if needed
                     return restaurantMapper.toDto(restaurant);
                 })
                 .collect(Collectors.toList());

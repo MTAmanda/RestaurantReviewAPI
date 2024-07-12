@@ -19,12 +19,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     @Query("SELECT r FROM Restaurant r WHERE r.name = :name AND r.zipcode = :zipcode")
     Optional<Restaurant> findByNameAndZipcode(@Param("name") String name, @Param("zipcode") String zipcode);
 
-    @Query("SELECT r, COUNT(dr) AS scoreCount " +
-            "FROM Restaurant r " +
-            "JOIN r.reviews dr " +
-            "WHERE r.zipcode = :zipcode " +
-            "AND (dr.peanutScore IS NOT NULL OR dr.eggScore IS NOT NULL OR dr.dairyScore IS NOT NULL) " +
-            "GROUP BY r " +
-            "ORDER BY scoreCount DESC")
-    List<Object[]> findRestaurantsByZipcodeWithScoresOrderedByScoreCount(@Param("zipcode") String zipcode);
+    @Query("SELECT r, SIZE(r.supportedAllergies) as allergyCount FROM Restaurant r " +
+            "WHERE r.zipcode = :zipcode AND SIZE(r.supportedAllergies) > 0 " +
+            "ORDER BY SIZE(r.supportedAllergies) DESC")
+    List<Object[]> findRestaurantsByZipcodeWithAllergyCount(@Param("zipcode") String zipcode);
 }

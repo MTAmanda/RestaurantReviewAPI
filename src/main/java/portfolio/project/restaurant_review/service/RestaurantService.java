@@ -16,5 +16,5 @@ public interface RestaurantService {
     List<RestaurantDto> findRestaurantsByAllergy(Allergies allergy);
     List<RestaurantDto> findRestaurantsByZipcode(String zipcode);
 
-    List<RestaurantDto> getRestaurantsByZipcodeWithScoresOrderedByScoreCount(String zipcode);
+    List<RestaurantDto> getRestaurantsByZipcodeWithAllergyCount(String zipcode);
 }
