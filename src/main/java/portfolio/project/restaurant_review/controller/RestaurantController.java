@@ -57,4 +57,9 @@ public class RestaurantController {
     public List<RestaurantDto> getRestaurantsByZipcode(@RequestParam String zipcode) {
         return restaurantService.findRestaurantsByZipcode(zipcode);
     }
+
+    @GetMapping("/by-zipcodesorted")
+    public List<RestaurantDto> getRestaurantsByZipcodeSorted(@RequestParam String zipcode) {
+        return restaurantService.getRestaurantsByZipcodeWithScoresOrderedByScoreCount(zipcode);
+    }
 }

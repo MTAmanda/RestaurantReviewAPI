@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/{displayName}")
-    public Optional<UserDto> findUserById(@PathVariable("displayName") String displayName) {
+    public UserDto findUserById(@PathVariable("displayName") String displayName) {
         return userService.findByDisplayName(displayName);
     }
 

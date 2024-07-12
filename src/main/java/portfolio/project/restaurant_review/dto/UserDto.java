@@ -10,7 +10,7 @@ public class UserDto {
     private boolean interestedInEggAllergy;
     private boolean interestedInDairyAllergy;
     private int reviewCount;
-
+/*
     public UserDto() {
     }
 
@@ -22,4 +22,5 @@ public class UserDto {
         this.interestedInDairyAllergy = user.isInterestedInDairyAllergy();
         this.reviewCount = user.getReviews() != null ? user.getReviews().size() : 0;
     }
+ */
 }

@@ -1,6 +1,9 @@
 package portfolio.project.restaurant_review.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
+import portfolio.project.restaurant_review.dto.mapper.UserMapper;
+import portfolio.project.restaurant_review.model.DiningReview;
 import portfolio.project.restaurant_review.model.User;
 import org.springframework.stereotype.Service;
 import portfolio.project.restaurant_review.dto.UserDto;
@@ -13,25 +16,33 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
+    @Transactional
     public List<UserDto> findAllUsers() {
-        return userRepository.findAll().stream()
-                .map(UserDto::new)
-                .collect(Collectors.toList());
+        List<User> userList = userRepository.findAll();
+        return userMapper.toDtoList(userList);
     }
 
     @Override
-    public Optional<UserDto> findByDisplayName(String displayName) {
-        return userRepository.findByDisplayName(displayName)
-                .map(UserDto::new);
+    @Transactional
+    public UserDto findByDisplayName(String displayName) {
+        Optional<User> userOptional = userRepository.findByDisplayName(displayName);
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("No User by given DisplayName was found");
+        }
+        User user = userOptional.get();
+        return userMapper.toDto(user);
     }
 
     @Override
+    @Transactional
     public UserDto registerUser(UserDto userDto) {
         Optional<User> existingUser = userRepository.findByDisplayName(userDto.getDisplayName());
         if (existingUser.isPresent()) {
@@ -49,12 +60,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateUser(String displayName, UserDto userDto) {
         Optional<User> oldUserOptional = userRepository.findByDisplayName(displayName);
         if (!oldUserOptional.isPresent()) {
             throw new RuntimeException("No User was found by the provided Username");
         }
         User oldUser = oldUserOptional.get();
+
+        if (!oldUser.getDisplayName().equals(userDto.getDisplayName())){
+            throw new RuntimeException("Cannot change your Display Name");
+        }
 
         oldUser.setInterestedInPeanutAllergy(userDto.isInterestedInPeanutAllergy());
         oldUser.setInterestedInEggAllergy(userDto.isInterestedInEggAllergy());
@@ -64,9 +80,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String displayName) {
         userRepository.deleteUserByDisplayName(displayName);
     }
+
 
     private UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();

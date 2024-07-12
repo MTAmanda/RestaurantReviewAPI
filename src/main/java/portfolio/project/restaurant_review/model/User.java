@@ -25,7 +25,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<DiningReview> reviews;
 
-    // Constructor to map from UserDto
+    /* Constructor to map from UserDto
     public User(UserDto userDto) {
         this.displayName = userDto.getDisplayName();
         this.interestedInPeanutAllergy = userDto.isInterestedInPeanutAllergy();
@@ -34,4 +34,5 @@ public class User {
     }
     public User() {
     }
+    */
 }
